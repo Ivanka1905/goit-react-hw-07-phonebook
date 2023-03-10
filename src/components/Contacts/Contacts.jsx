@@ -1,36 +1,31 @@
 import ContactItem from 'components/ContactItem';
-import PropTypes from 'prop-types';
 import { ContactsList } from './Contacts.styled';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useRef } from 'react';
-import { addContactAction } from 'redux/contactsSlice';
+import { getContacts, getFilter } from 'redux/selectors';
 
 const Contacts = () => {
   const inputRef = useRef('');
-  const contacts = useSelector(state => state.contacts.contact);
-  const filter = useSelector(state => state.contacts.filter);
-  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
 
-  const deleteContact = deleteId => {
-    dispatch(addContactAction(contacts.filter(c => c.id !== deleteId)));
-  };
-
-  const filteredContactsList = contacts.filter(name =>
+  console.log(contacts.items);
+  const filteredContactsList = contacts.items.filter(name =>
     name.name.toLocaleLowerCase().includes(filter)
   );
 
-  if (contacts.length === 0) {
+  if (contacts.items.length === 0) {
     return <h2>No contacts</h2>;
   } else if (inputRef === '') {
     return (
       <ContactsList>
-        {contacts &&
-          contacts.map(({ id, name, number }) => (
+        {contacts.items &&
+          contacts.items.map(({ id, name, phone }) => (
             <ContactItem
               key={id}
               name={name}
-              number={number}
-              onClick={deleteContact}
+              phone={phone}
+              
               id={id}
             />
           ))}
@@ -40,29 +35,18 @@ const Contacts = () => {
     return (
       <ContactsList>
         {filteredContactsList &&
-          filteredContactsList.map(({ id, name, number }) => (
+          filteredContactsList.map(({ id, name, phone }) => (
             <ContactItem
               key={id}
               name={name}
-              number={number}
-              onClick={deleteContact}
+              phone={phone}
+            
               id={id}
             />
           ))}
       </ContactsList>
     );
   }
-};
-
-Contacts.propTypes = {
-  contactsList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      number: PropTypes.string,
-    })
-  ),
-  deleteContact: PropTypes.func,
 };
 
 export default Contacts;

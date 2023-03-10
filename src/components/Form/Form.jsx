@@ -1,13 +1,12 @@
 import React from 'react';
-import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 import { FormEl, Label, Input, Button } from './Form.styled';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContactAction } from 'redux/contactsSlice';
+import { postContactsThunk } from 'redux/service/postContacts';
+import { getContacts } from 'redux/selectors';
 
 const Form = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contact);
+  const contacts = useSelector(getContacts);
 
   const addNewContact = e => {
     e.preventDefault();
@@ -15,10 +14,10 @@ const Form = () => {
     const name = e.target.name.value;
     const number = e.target.number.value;
 
-    if (contacts.find(contacts => contacts.name === name)) {
+    if (contacts.items.find(contacts => contacts.name === name)) {
       alert(`${name} is already in contacts.`);
     } else {
-      dispatch(addContactAction([...contacts, { id: nanoid(), name, number }]));
+      dispatch(postContactsThunk({ name: name, phone: number }));
     }
 
     e.target.name.value = '';
@@ -50,13 +49,6 @@ const Form = () => {
       <Button type="submit">Add contact</Button>
     </FormEl>
   );
-};
-
-Form.propTypes = {
-  name: PropTypes.string,
-  number: PropTypes.string,
-  handleSubmit: PropTypes.func,
-  handleChange: PropTypes.func,
 };
 
 export default Form;

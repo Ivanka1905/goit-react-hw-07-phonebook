@@ -1,36 +1,66 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { getContactsThunk } from './service/getContacts';
+import { deleteContactsThunk } from './service/deleteContacts';
+import { postContactsThunk } from './service/postContacts';
 
-const contactSlice = createSlice({
+export const contactSlice = createSlice({
   name: 'contacts',
   initialState: {
-    contact: [],
+    contact: {
+      items: [],
+      isLoading: false,
+      error: null,
+    },
     filter: '',
   },
   reducers: {
-    addContactAction(state, action) {
-      state.contact = action.payload;
-    },
-    deleteContactAction(state, action) {
-      state.contact = state.contact.filter(c => c.id !== action.payload);
-    },
     filterContactAction(state, action) {
       state.filter = action.payload;
-     },
+    },
+  },
+  extraReducers: {
+    [getContactsThunk.pending](state, _) {
+      state.contact.isLoading = true;
+    },
+    [getContactsThunk.fulfilled](state, action) {
+      state.contact.isLoading = false;
+      state.contact.error = null;
+      state.contact.items = action.payload;
+    },
+    [getContactsThunk.rejected](state, action) {
+      state.contact.isLoading = false;
+      state.contact.items = action.payload;
+      state.contact.error = action.payload;
+    },
+    [postContactsThunk.pending](state, _) {
+      state.contact.isLoading = true;
+    },
+    [postContactsThunk.fulfilled](state, action) {
+      state.contact.isLoading = false;
+      state.contact.error = null;
+      state.contact.items = [...state.contact.items, action.payload];
+    },
+    [postContactsThunk.rejected](state, action) {
+      state.contact.isLoading = false;
+      state.contact.items = action.payload;
+      state.contact.error = action.payload;
+    },
+    [deleteContactsThunk.pending](state, _) {
+      state.contact.isLoading = true;
+    },
+    [deleteContactsThunk.fulfilled](state, action) {
+      state.contact.isLoading = false;
+      state.contact.error = null;
+      state.contact.items = state.contact.items.filter(
+        ({ id }) => id !== action.payload.id
+      );
+    },
+    [deleteContactsThunk.rejected](state, action) {
+      state.contact.isLoading = false;
+      state.contact.items = action.payload;
+      state.contact.error = action.payload;
+    },
   },
 });
 
-console.log(contactSlice);
-
-const persistConfig = {
-  key: 'contact',
-  storage,
-};
-
-export const contactsReducer = persistReducer(
-  persistConfig,
-  contactSlice.reducer
-);
-
-export const { addContactAction, deleteContactAction, filterContactAction } = contactSlice.actions;
+export const { filterContactAction } = contactSlice.actions;

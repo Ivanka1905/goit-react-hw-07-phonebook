@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
 import { Label, Input } from './Filter.styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { filterContactAction } from 'redux/contactsSlice';
+import { getFilter } from 'redux/selectors';
 
 const Filter = () => {
   const dispatch = useDispatch();
-  const filter = useSelector(state => state.contacts.filter);
+  const filter = useSelector(getFilter);
 
   const filterContacts = e => {
     const searchValue = e.target.value.toLocaleLowerCase();
@@ -18,11 +18,6 @@ const Filter = () => {
       <Input type="text" value={filter} onChange={filterContacts}></Input>
     </Label>
   );
-};
-
-Filter.propTypes = {
-  filter: PropTypes.string,
-  onChange: PropTypes.func,
 };
 
 export default Filter;

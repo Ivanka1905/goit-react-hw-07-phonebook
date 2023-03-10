@@ -1,10 +1,18 @@
-import PropTypes from 'prop-types';
 import Form from 'components/Form';
 import Contacts from 'components/Contacts';
 import Filter from 'components/Filter';
 import { Container } from 'components/App.styled';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getContactsThunk } from 'redux/service/getContacts';
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, [dispatch]);
+
   return (
     <Container>
       <h1>Phonebook</h1>
@@ -14,13 +22,6 @@ const App = () => {
       <Contacts />
     </Container>
   );
-};
-
-App.propTypes = {
-  filterContacts: PropTypes.func,
-  getDataOnSubmit: PropTypes.func,
-  changeFilter: PropTypes.func,
-  deleteContact: PropTypes.func,
 };
 
 export default App;
