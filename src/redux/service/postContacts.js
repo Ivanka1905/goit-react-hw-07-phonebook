@@ -5,7 +5,7 @@ const postApiContacts = axios.create({
     baseURL: 'https://640aa14365d3a01f98036b31.mockapi.io/',
     method: 'post',
 })
-export const postContactsThunk = createAsyncThunk(
+export const addContact = createAsyncThunk(
     'contacts/addContact',
     async (contact, thunkAPI) => {
         try {

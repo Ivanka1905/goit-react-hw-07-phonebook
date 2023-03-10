@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormEl, Label, Input, Button } from './Form.styled';
 import { useSelector, useDispatch } from 'react-redux';
-import { postContactsThunk } from 'redux/service/postContacts';
+import { addContact } from 'redux/service/postContacts';
 import { getContacts } from 'redux/selectors';
 
 const Form = () => {
@@ -17,7 +17,7 @@ const Form = () => {
     if (contacts.items.find(contacts => contacts.name === name)) {
       alert(`${name} is already in contacts.`);
     } else {
-      dispatch(postContactsThunk({ name: name, phone: number }));
+      dispatch(addContact({ name: name, phone: number }));
     }
 
     e.target.name.value = '';

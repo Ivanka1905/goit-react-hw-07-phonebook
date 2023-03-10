@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getContactsThunk } from './service/getContacts';
-import { deleteContactsThunk } from './service/deleteContacts';
-import { postContactsThunk } from './service/postContacts';
+import { fetchContacts } from './service/getContacts';
+import { deleteContact } from './service/deleteContacts';
+import { addContact } from './service/postContacts';
 
 export const contactSlice = createSlice({
   name: 'contacts',
@@ -19,43 +19,43 @@ export const contactSlice = createSlice({
     },
   },
   extraReducers: {
-    [getContactsThunk.pending](state, _) {
+    [fetchContacts.pending](state, _) {
       state.contact.isLoading = true;
     },
-    [getContactsThunk.fulfilled](state, action) {
+    [fetchContacts.fulfilled](state, action) {
       state.contact.isLoading = false;
       state.contact.error = null;
       state.contact.items = action.payload;
     },
-    [getContactsThunk.rejected](state, action) {
+    [fetchContacts.rejected](state, action) {
       state.contact.isLoading = false;
       state.contact.items = action.payload;
       state.contact.error = action.payload;
     },
-    [postContactsThunk.pending](state, _) {
+    [addContact.pending](state, _) {
       state.contact.isLoading = true;
     },
-    [postContactsThunk.fulfilled](state, action) {
+    [addContact.fulfilled](state, action) {
       state.contact.isLoading = false;
       state.contact.error = null;
       state.contact.items = [...state.contact.items, action.payload];
     },
-    [postContactsThunk.rejected](state, action) {
+    [addContact.rejected](state, action) {
       state.contact.isLoading = false;
       state.contact.items = action.payload;
       state.contact.error = action.payload;
     },
-    [deleteContactsThunk.pending](state, _) {
+    [deleteContact.pending](state, _) {
       state.contact.isLoading = true;
     },
-    [deleteContactsThunk.fulfilled](state, action) {
+    [deleteContact.fulfilled](state, action) {
       state.contact.isLoading = false;
       state.contact.error = null;
       state.contact.items = state.contact.items.filter(
         ({ id }) => id !== action.payload.id
       );
     },
-    [deleteContactsThunk.rejected](state, action) {
+    [deleteContact.rejected](state, action) {
       state.contact.isLoading = false;
       state.contact.items = action.payload;
       state.contact.error = action.payload;

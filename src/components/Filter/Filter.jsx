@@ -8,7 +8,7 @@ const Filter = () => {
   const filter = useSelector(getFilter);
 
   const filterContacts = e => {
-    const searchValue = e.target.value.toLocaleLowerCase();
+    const searchValue = e.target.value.toLowerCase();
     dispatch(filterContactAction(searchValue));
   };
 

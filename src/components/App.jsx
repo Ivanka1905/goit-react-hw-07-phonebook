@@ -4,13 +4,13 @@ import Filter from 'components/Filter';
 import { Container } from 'components/App.styled';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getContactsThunk } from 'redux/service/getContacts';
+import { fetchContacts } from 'redux/service/getContacts';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getContactsThunk());
+    dispatch(fetchContacts());
   }, [dispatch]);
 
   return (

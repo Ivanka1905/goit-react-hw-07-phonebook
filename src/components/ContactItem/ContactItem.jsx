@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
 import { ListItem, Button, Span } from './ContactItem.styled';
 import { useDispatch } from 'react-redux';
-import { deleteContactsThunk } from 'redux/service/deleteContacts';
+import { deleteContact } from 'redux/service/deleteContacts';
 
 const ContactItem = ({ name, phone, id }) => {
   const dispatch = useDispatch();
 
-  const deleteContact = deleteId => {
-    dispatch(deleteContactsThunk(deleteId));
+  const deleteContactt = deleteId => {
+    dispatch(deleteContact(deleteId));
   };
   return (
     <ListItem>
       <span>
         &#9900; {name}: <Span>{phone}</Span>
       </span>
-      <Button type="button" onClick={() => deleteContact(id)}>
+      <Button type="button" onClick={() => deleteContactt(id)}>
         Delete
       </Button>
     </ListItem>

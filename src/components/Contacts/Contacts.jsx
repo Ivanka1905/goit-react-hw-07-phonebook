@@ -10,7 +10,7 @@ const Contacts = () => {
   const filter = useSelector(getFilter);
 
   const filteredContactsList = contacts.items.filter(name =>
-    name.name.toLocaleLowerCase().includes(filter)
+    name.name.toLowerCase().includes(filter)
   );
 
   if (contacts.items.length === 0) {

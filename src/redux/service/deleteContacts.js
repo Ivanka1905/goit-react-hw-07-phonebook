@@ -5,8 +5,8 @@ const deleteApiContacts = axios.create({
   baseURL: 'https://640aa14365d3a01f98036b31.mockapi.io/',
   method: 'delete',
 });
-export const deleteContactsThunk = createAsyncThunk(
-  'contacts/fetchAll',
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
   async (id, thunkAPI) => {
     try {
       const response = await deleteApiContacts.delete(`contacts/${id}`);
